@@ -15,7 +15,11 @@ def check_voucher_status(url):
         # Verifique o conteúdo da página aqui
         if "sucesso" in soup.text:
             return "válido"
-        elif "voucher já utilizado" in soup.text:
+        elif "Oferta indisponível" in soup.text:
+            # Oferta indisponível
+            # Esta oferta já foi resgatada. Use um link de
+            # promoção válido ou entre em contato com o 
+            # Suporte ao Cliente para obter mais ajuda.
             return "utilizado"
         elif "número de tentativas excedida" in soup.text:
             return "excedida"
