@@ -12,5 +12,4 @@ Quando o número de tentativas for excedida, eu preciso que o código pare de se
 Os vouchers serão escolhidos de linhas aleatórias, as quais ainda não possuem um status registrado na coluna C da tabela, dando continuidado ao preenchimento dessa consulta por um longo período, devido a impossibilidade de testar todos os códigos em uma só tentativa.
 
 ### Configuração do ambiente
-pip install pandas openpyxl requests beautifulsoup4
-
+pip install selenium pandas openpyxl webdriver-manager
