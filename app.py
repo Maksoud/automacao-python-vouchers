@@ -11,10 +11,6 @@ import time
 
 # Configurar o Selenium
 chrome_options = Options()
-# chrome_options.add_argument("--headless")  # Executar o Chrome no modo headless (opcional)
-# chrome_options.add_argument("--disable-gpu")
-# chrome_options.add_argument("--no-sandbox")
-# chrome_options.add_argument("--disable-dev-shm-usage")
 winuser = "renee"  # Nome de usuário do Windows
 chrome_options.add_argument(f"--user-data-dir=C:/Users/{winuser}/AppData/Local/Google/Chrome/User Data")  # Caminho para o diretório de dados do usuário do Chrome
 chrome_options.add_argument("--profile-directory=Default")  # Diretório do perfil padrão
@@ -33,10 +29,10 @@ def check_voucher_status(url):
         page_source = driver.page_source
 
         if "Something went wrong. Please try using username and password." or "Ocorreu um erro. Tente usar o nome de usuário e a senha." in page_source:
-            print("Aguardando 15s para realização do login...")
-            time.sleep(15)  # Aguarda o carregamento da página
+            print("Aguardando 5s para realização do login...")
+            time.sleep(5)  # Aguarda o carregamento da página
 
-        # Leia novamente a página após os 40 segundos reservados para o login
+        # Leia novamente a página após os 5 segundos reservados para o login
         driver.get(url)
         page_source = driver.page_source
         # print(page_source)
@@ -45,26 +41,59 @@ def check_voucher_status(url):
 
         # Verifique o conteúdo da página aqui
         if "sucesso" in page_source:
+
             return "válido"
+        
         elif "Oferta indisponível" in page_source:
+        
             # Oferta indisponível
             # Esta oferta já foi resgatada. Use um link de
             # promoção válido ou entre em contato com o 
             # Suporte ao Cliente para obter mais ajuda.
             # oferta_indisponivel.png
+        
             return "utilizado"
-        elif "número de tentativas excedida" in page_source:
+        
+        elif "Offer unavailable" in page_source:
+
+            # Offer unavailable
+            # This offer has already been redeemed. Please
+            # use a valid promotion link or contact
+            # customer support for more assistance.
+            # offer_unavailable.png
+        
+            return "utilizado"
+        
+        elif "tente novamente mais tarde" in page_source:
+
             return "excedida"
+        
+        elif "Please try again in a few minutes.." in page_source:
+
+            # Something went wrong
+            # You have made too many requests. Please try
+            # again in a few minutes..
+            # too_many_requests.png
+
+            return "excedida"
+        
         elif "You cannot redeem this offer because you currently have an active Premium subscription." in page_source:
+
             # You cannot redeem this offer because you 
             # currently have an active Premium 
             # subscription.
             # something_went_wrong.png
+
             return "premium"
+        
         else:
+
             print(f"Status desconhecido para {url}")
+            print(page_source)
             return "erro"
+        
     except Exception as e:
+
         print(f"Erro ao acessar {url}: {e}")
         return "erro"
 
